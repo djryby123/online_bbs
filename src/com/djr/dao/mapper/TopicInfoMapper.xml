@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.djr.dao.TopicInfoDAO">
+
+    <insert id="AddNewTopic" parameterType="com.djr.entity.TopicInfo">
+        INSERT INTO topicinfo (title,content,uId,boardId) VALUES (#{title},#{content},#{uId},#{boardId})
+    </insert>
+
+    <select id="listTopicInfo" resultType="com.djr.entity.TopicInfo" parameterType="int">
+        SELECT * FROM topicinfo WHERE boardId = #{boardId} ORDER BY publishTime DESC
+    </select>
+
+    <select id="countTopic" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM topicinfo WHERE boardId = #{boardId}
+    </select>
+
+    <select id="getLastTopicInfo" resultType="com.djr.entity.TopicInfo" parameterType="int">
+        SELECT * FROM topicinfo WHERE boardId = #{boardId} ORDER BY publishTime DESC limit 0,1
+    </select>
+
+    <select id="detailTopicInfo" resultType="com.djr.entity.TopicInfo" parameterType="int">
+        SELECT * FROM topicinfo WHERE topicId = #{topicId}
+    </select>
+
+    <select id="getTopicByPage" resultType="com.djr.entity.TopicInfo" parameterType="Map">
+        SELECT * FROM topicinfo WHERE boardId = #{boardId} ORDER BY publishTime DESC limit #{start},10
+    </select>
+
+</mapper>

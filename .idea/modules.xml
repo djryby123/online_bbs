@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/bbs_servlet_jsp.iml" filepath="$PROJECT_DIR$/bbs_servlet_jsp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bbs_online.iml" filepath="$PROJECT_DIR$/bbs_online.iml" />
     </modules>
   </component>
 </project>

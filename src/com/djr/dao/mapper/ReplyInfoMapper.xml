@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.djr.dao.ReplyInfoDAO">
+
+    <select id="getReplyInfo" resultType="com.djr.entity.ReplyInfo" parameterType="int">
+        SELECT * FROM replyinfo WHERE topicId = #{topicId}
+    </select>
+
+    <select id="countReply" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM replyinfo WHERE topicId = #{topicId}
+    </select>
+
+    <insert id="AddNewReply" parameterType="com.djr.entity.ReplyInfo">
+        INSERT INTO replyinfo (title,content,uId,topicId) VALUES (#{title},#{content},#{uId},#{topicId})
+    </insert>
+
+    <select id="getReplyByPage" resultType="com.djr.entity.ReplyInfo" parameterType="Map">
+        SELECT * FROM replyinfo WHERE topicId = #{topicId} ORDER BY publishTime DESC limit #{start},10
+    </select>
+
+</mapper>

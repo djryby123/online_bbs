@@ -2,38 +2,41 @@ package com.djr.service;
 
 import com.djr.dao.UserInfoDAO;
 import com.djr.entity.UserInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
+import java.util.Map;
 
+@Service
 public class UserInfoService {
+    @Autowired
+    UserInfoDAO userInfoDAO;
 
-    UserInfoDAO dao = new UserInfoDAO();
-
-    public void reg(UserInfo ui) throws SQLException{
-        dao.reg(ui);
+    public void reg(UserInfo ui){
+        userInfoDAO.reg(ui);
     }
 
-    public String checkUserName(String uName) throws SQLException {
-        boolean flag = dao.checkUserName(uName);
+    public String checkUserName(String uName){
+        boolean flag = userInfoDAO.checkUserName(uName);
         if(flag == true){
-            return "true";
-        }else{
             return "false";
+        }else{
+            return "true";
         }
     }
 
-    public UserInfo login(String uName,String uPass) throws SQLException {
-        UserInfo ui = dao.login(uName,uPass);
+    public UserInfo login(Map map){
+        UserInfo ui = userInfoDAO.login(map);
         return ui;
     }
 
-    public String findUname(int uId) throws SQLException{
-        String uName = dao.findUname(uId);
+    public String findUname(int uId){
+        String uName = userInfoDAO.findUname(uId);
         return uName;
     }
 
-    public UserInfo getUserInfo(int uId) throws SQLException {
-        UserInfo userInfo = dao.getUserInfo(uId);
+    public UserInfo getUserInfo(int uId){
+        UserInfo userInfo = userInfoDAO.getUserInfo(uId);
         return userInfo;
     }
 }

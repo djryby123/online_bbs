@@ -2,25 +2,28 @@ package com.djr.service;
 
 import com.djr.dao.BoardInfoDAO;
 import com.djr.entity.BoardInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
+@Service
 public class BoardInfoService  {
-    BoardInfoDAO dao = new BoardInfoDAO();
+    @Autowired
+    BoardInfoDAO boardInfoDAO;
 
-    public List<BoardInfo> getAllFatherBoard() throws SQLException {
-        List<BoardInfo> list = dao.getAllFatherBoard();
+    public List<BoardInfo> getAllFatherBoard(){
+        List<BoardInfo> list = boardInfoDAO.getAllFatherBoard();
         return list;
     }
 
-    public List<BoardInfo> getAllChildBoard(int parentId) throws SQLException {
-        List<BoardInfo> list = dao.getAllChildBoard(parentId);
+    public List<BoardInfo> getAllChildBoard(int parentId){
+        List<BoardInfo> list = boardInfoDAO.getAllChildBoard(parentId);
         return list;
     }
 
-    public String getBoardName(int boardId) throws SQLException {
-        String boardName = dao.getBoardName(boardId);
+    public String getBoardName(int boardId){
+        String boardName = boardInfoDAO.getBoardName(boardId);
         return  boardName;
     }
 }

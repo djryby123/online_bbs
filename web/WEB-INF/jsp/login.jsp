@@ -9,25 +9,25 @@
 <HEAD>
     <TITLE>简单小论坛--登录</TITLE>
     <META http-equiv=Content-Type content="text/html; charset=gbk">
-    <Link rel="stylesheet" type="text/css" href="style/style.css"/>
+    <Link rel="stylesheet" type="text/css" href="../../style/style.css"/>
 </HEAD>
 
 <BODY>
 <DIV>
-    <IMG src="image/logo.gif">
+    <IMG src="../../image/logo.gif">
 </DIV>
 <!--      用户信息、登录、注册        -->
 
 <DIV class="h">
-    您尚未　<a href="login.jsp">登录</a>
-    &nbsp;| &nbsp; <A href="reg.jsp">注册</A> |
+    您尚未　<a href="login">登录</a>
+    &nbsp;| &nbsp; <A href="reg">注册</A> |
 </DIV>
 
 
 <BR/>
 <!--      导航        -->
 <DIV>
-    &gt;&gt;<B><a href="index.jsp">论坛首页</a></B>
+    &gt;&gt;<B><a href="index">论坛首页</a></B>
 </DIV>
 <!--      用户登录表单        -->
 <DIV class="t" style="MARGIN-TOP: 15px" align="center">
@@ -44,7 +44,7 @@
 </CENTER>
 </BODY>
 </HTML>
-<script type="text/javascript" src="plugins/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="../../plugins/jquery-1.7.2.js"></script>
 <script type="text/javascript">
 
     var f1 = function check() {
@@ -60,7 +60,7 @@
 
     $(".btn").click(function () {
         $.ajax({
-            url: "doLogin.do",
+            url: "/bbs/doLogin",
             type: "post",
             data: {
                 uName: $("#uName").val(),
@@ -70,7 +70,7 @@
             dataType: "text",
             success: function (data) {
                 if ("true" == data) {
-                    window.location.href = "<%=basePath%>index.jsp"
+                    window.location.href = "<%=basePath%>bbs/index"
                 }else{
                     alert("用户名或密码错误！");
                 }

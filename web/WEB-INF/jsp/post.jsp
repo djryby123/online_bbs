@@ -1,4 +1,4 @@
-<%@ page import="com.djr.entity.UserInfo" %>
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page pageEncoding="UTF-8" %>
 <%
     String path = request.getContextPath();
@@ -8,28 +8,28 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 <HTML>
 <HEAD>
-    <TITLE>简单小论坛--回复帖子</TITLE>
+    <TITLE>简单小论坛--发布帖子</TITLE>
     <META http-equiv=Content-Type content="text/html; charset=gbk">
-    <Link rel="stylesheet" type="text/css" href="style/style.css"/>
+    <Link rel="stylesheet" type="text/css" href="../../style/style.css"/>
 </HEAD>
 
 <BODY>
 <DIV>
-    <IMG src="image/logo.gif">
+    <IMG src="../../image/logo.gif">
 </DIV>
 <!--      用户信息、登录、注册        -->
 
 <DIV class="h">
-    <%
-        UserInfo userInfo = (UserInfo) session.getAttribute("userinfo");
-        if (userInfo != null) {
-    %>
-    欢迎您，会员 <%=userInfo.getuName()%>&nbsp;| &nbsp; <A href="reg.jsp">新用户注册</A>&nbsp;| &nbsp;
-    <A href="exit.jsp?url=index.jsp">退出登录</A>
-    <%} else {%>
-    您尚未 <a href="login.jsp">登录</a>
-    &nbsp;| &nbsp; <A href="reg.jsp">新用户注册</A> |
-    <%}%>
+    <C:choose>
+        <C:when test="${userinfo != null}">
+            欢迎您，会员 ${userinfo.uName}&nbsp;| &nbsp; <A href="reg">新用户注册</A>&nbsp;| &nbsp;
+            <A href="exit?url=index">退出登录</A>
+        </C:when>
+        <C:otherwise>
+            您尚未 <a href="login">登录</a>
+            &nbsp;| &nbsp; <A href="reg">新用户注册</A> |
+        </C:otherwise>
+    </C:choose>
 </DIV>
 
 
@@ -37,8 +37,8 @@
 <DIV><BR/>
     <!--      导航        -->
     <DIV>
-        &gt;&gt;<B><a href="index.jsp">论坛首页</a></B>&gt;&gt;
-        <B><a href="list.do?boardId=${sessionScope.boardId}&uId=${sessionScope.uId}">${sessionScope.boardName}</a></B>
+        &gt;&gt;<B><a href="index">论坛首页</a></B>&gt;&gt;
+        <B><a href="list?boardId=${sessionScope.boardId}&currentPage=1">${sessionScope.boardName}</a></B>
     </DIV>
     <BR/>
     <DIV>
@@ -46,7 +46,7 @@
             <DIV class="t">
                 <TABLE cellSpacing="0" cellPadding="0" align="center">
                     <TR>
-                        <TD class="h" colSpan="3"><B>回复帖子</B></TD>
+                        <TD class="h" colSpan="3"><B>发表帖子</B></TD>
                     </TR>
 
                     <TR class="tr3">
@@ -74,18 +74,15 @@
                 <INPUT class="btn" id="btn1" tabIndex="3" type="button" value="提 交">
                 <INPUT class="btn" tabIndex="4" type="reset" value="重 置">
             </DIV>
-            <input type="hidden" id="tId" value="<%=request.getParameter("topicId")%>"/>
-            <%
-                if (userInfo != null) {
-            %>
-            <input type="hidden" id="uId" value="<%=userInfo.getuId()%>"/>
-            <%
-            } else {
-            %>
-            <input type="hidden" id="uId" value="-1"/>
-            <%
-                }
-            %>
+            <input type="hidden" id="bId" value="${sessionScope.boardId}">
+            <C:choose>
+                <C:when test="${userinfo != null}">
+                    <input type="hidden" id="uId" value="${userinfo.uId}">
+                </C:when>
+                <C:otherwise>
+                    <input type="hidden" id="uId" value="-1">
+                </C:otherwise>
+            </C:choose>
         </FORM>
     </DIV>
 </DIV>
@@ -97,7 +94,7 @@
 
 </BODY>
 </HTML>
-<script type="text/javascript" src="plugins/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="../../plugins/jquery-1.7.2.js"></script>
 <script type="text/javascript">
     var f1 = function check() {
         if ($("#uId").val() == "-1") {
@@ -120,16 +117,19 @@
     $("#btn1").click(function () {
         $.ajax({
             type: "post",
-            url: "reply.do",
+            url: "/bbs/publish",
             data: {
                 title: $("#edit1").val(),
                 content: $("#edit2").val(),
-                tId: $("#tId").val(),
+                bId: $("#bId").val(),
                 uId: $("#uId").val()
             },
             beforeSend: f1,
+            dataType: "text",
             success: function (data) {
-                window.location.href = "<%=basePath %>detail.do?topicId=<%=request.getParameter("topicId")%>";
+                if("true" == data){
+                    window.location.href = "<%=basePath %>bbs/list?boardId=${sessionScope.boardId}&currentPage=1";
+                }
             }
         });
     });
